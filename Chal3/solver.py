@@ -16,7 +16,17 @@ def solve_first(data):
 
 
 def solve_second(data):
-    pass
+    mul_regex = re.compile(r"(?:mul\(\-?\d{1,10},\d{1,10}\)|do\(\)|don't\(\))")
+    sum = 0
+    noop = False
+    for instr in mul_regex.findall(data):
+        if instr == "do()":
+            noop = False
+        elif instr == "don't()":
+            noop = True
+        elif not noop:
+            sum += mul(instr)
+    return sum
 
 
 def main():
