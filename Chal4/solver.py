@@ -44,7 +44,34 @@ def get_lr_diagonals(matrix):
 
 
 def solve_second(data):
-    return None
+    horizontal = data.strip().split()
+    arr = np.array([list(line) for line in horizontal])
+    patterns = [
+        np.array([["M", 0, "M"], [0, "A", 0], ["S", 0, "S"]]),
+        np.array([["M", 0, "S"], [0, "A", 0], ["M", 0, "S"]]),
+        np.array([["S", 0, "M"], [0, "A", 0], ["S", 0, "M"]]),
+        np.array([["S", 0, "S"], [0, "A", 0], ["M", 0, "M"]]),
+    ]
+
+    sum = 0
+    rows, cols = arr.shape
+    for i in range(rows - 2):
+        for j in range(cols - 2):
+            for reference in patterns:
+                matrix = arr[i : i + 3, j : j + 3].copy()
+                if check_matrix(matrix, reference):
+                    sum += 1
+                    continue
+
+    return sum
+
+
+def check_matrix(matrix, reference):
+    indices = [(0, 0), (0, 2), (1, 1), (2, 0), (2, 2)]
+    for i, j in indices:
+        if not matrix[i, j] == reference[i, j]:
+            return False
+    return True
 
 
 def main():
